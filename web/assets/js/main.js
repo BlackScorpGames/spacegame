@@ -16,7 +16,7 @@ $(function () {
 
         scene = new THREE.Scene();
 
-        camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 10000);
         camera.position.z = 1000;
 
         renderer = new THREE.WebGLRenderer();
@@ -56,9 +56,9 @@ $(function () {
 
 
         var material = new THREE.PointCloudMaterial({
-            //color:0x00ff00,
 
-            size: 100,
+
+            size: 12,
             map: THREE.ImageUtils.loadTexture(
                 "assets/img/galactictop.png"
             ),
@@ -97,7 +97,7 @@ $(function () {
 
         var intersects =  raycaster.intersectObject(sphere );
         if ( intersects.length > 0 ) {
-            intersects[ 0 ].object.material.color.setHex( Math.random() * 0xffffff );
+          //  intersects[ 0 ].object.material.color.setHex( Math.random() * 0xffffff );
 
 
         }
