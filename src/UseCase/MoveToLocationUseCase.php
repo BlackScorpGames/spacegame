@@ -21,17 +21,17 @@ class MoveToLocationUseCase {
     private function loadShip($username){
         $sql = "
         SELECT
-        u.id AS userId,
-        u.username,
-        s.id AS shipId,
-        s.shipname,
-        e.id AS engineId,
-        e.name AS enginename,
-        se.slot
+        u.userId,
+        username,
+        s.shipId,
+        shipname,
+        e.engineId,
+        enginename,
+        slot
         FROM users u
-        INNER JOIN ships s ON(u.id = s.user_id)
-        INNER JOIN ship_has_engines se ON(se.ship_id = s.id)
-        INNER JOIN engines e ON(se.engine_id = e.id)
+        INNER JOIN ships s USING(userId)
+        INNER JOIN ship_has_engines se USING(shipId)
+        INNER JOIN engines e USING(engineId)
         WHERE u.username = :username
         ";
         $statement = $this->connection->prepare($sql);
@@ -55,6 +55,7 @@ class MoveToLocationUseCase {
         }
         return $ship;
     }
+
     public function process(MoveToLocationRequest $request,MoveToLocationResponse $response){
         $ship = $this->loadShip($request->getUserName());
         if(!$ship){
