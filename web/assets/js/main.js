@@ -23,13 +23,23 @@ $(function(){
         scene.add( sphere );
     }
 
-
-
     camera.position.z = 10;
+    $('#map').on('mousewheel DOMMouseScroll',function(e){
+        var delta = e.originalEvent.detail || e.originalEvent.wheelDelta;
+        if(delta < 0){
+            camera.position.z -= 5;
+        }else{
+            camera.position.z += 5;
+        }
+    })
+
+
     function render() {
 
         requestAnimationFrame(render);
         renderer.render(scene, camera);
     }
     render();
+
+
 });
