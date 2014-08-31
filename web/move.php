@@ -6,13 +6,13 @@ $targetY = $_GET['y'];
 $username = 'test'; //$_SESSION['user']
 
 //запрос
-$request = new \SpaceGame\Request\MoveToLocationRequest($username,$targetY,$targetX);
+$request = new SpaceGame\Request\MoveToLocationRequest($username,$targetY,$targetX);
 
 //ответ
-$response = new \SpaceGame\Response\MoveToLocationResponse();
+$response = new SpaceGame\Response\MoveToLocationResponse();
 
 //вариант использования
-$usecase = new \SpaceGame\UseCase\MoveToLocationUseCase($pdo);
+$usecase = new SpaceGame\UseCase\MoveToLocationUseCase($pdo);
 $usecase->process($request,$response);
 
 
