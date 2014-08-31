@@ -1,6 +1,6 @@
 $(function () {
 
-    var controls, scene, camera, renderer, stats;
+    var controls, scene, camera, renderer, stats,raycaster,geometry,sphere,mouse = {x:0,y:0},projector;
     init();
     createScene();
     animate();
@@ -46,14 +46,18 @@ $(function () {
         controls.keys = [ 65, 83, 68 ];
 
         controls.addEventListener('change', render);
-
+        projector = new THREE.Projector();
+        raycaster = new THREE.Raycaster();
     }
 
     function createScene() {
-        var geometry = new THREE.Geometry();
+         geometry = new THREE.Geometry();
+
 
 
         var material = new THREE.PointCloudMaterial({
+            //color:0x00ff00,
+
             size: 100,
             map: THREE.ImageUtils.loadTexture(
                 "assets/img/galactictop.png"
@@ -73,7 +77,7 @@ $(function () {
 
         }
 
-        var sphere = new THREE.PointCloud(geometry, material);
+         sphere = new THREE.PointCloud(geometry, material);
         sphere.sortParticles = true;
         scene.add(sphere);
 
@@ -84,6 +88,19 @@ $(function () {
         requestAnimationFrame(animate);
         controls.update();
         stats.update();
+
+       var vector = new THREE.Vector3( mouse.x, mouse.y, 1 );
+
+        projector.unprojectVector( vector, camera );
+
+        raycaster.ray.set( camera.position, vector.sub( camera.position ).normalize() );
+
+        var intersects =  raycaster.intersectObject(sphere );
+        if ( intersects.length > 0 ) {
+            intersects[ 0 ].object.material.color.setHex( Math.random() * 0xffffff );
+
+
+        }
         render();
     }
 
@@ -102,6 +119,11 @@ $(function () {
         controls.handleResize();
 
         render();
+    }).on('mousemove',function(e){
+        e.preventDefault();
+
+        mouse.x = ( e.clientX / window.innerWidth ) * 2 - 1;
+        mouse.y = - ( e.clientY / window.innerHeight ) * 2 + 1;
     });
 
 
