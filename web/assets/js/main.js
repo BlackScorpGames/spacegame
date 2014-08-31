@@ -1,4 +1,23 @@
 $(function(){
+
+    // CHANGE THE INITIAL SEED HERE
+    Math.seed = 1337;
+
+    /**
+     * Math.seededRandom()
+     *
+     */
+    Math.seededRandom = function(max, min) {
+        max = max || 1;
+        min = min || 0;
+
+        Math.seed = (Math.seed * 9301 + 49297) % 233280;
+        var rnd = Math.seed / 233280.0;
+
+        return min + rnd * (max - min);
+    }
+
+
     var stats = new Stats();
     stats.setMode(0);
     stats.domElement.style.position = 'absolute';
@@ -47,18 +66,27 @@ $(function(){
     scene.add( sphere );
 
     camera.position.z = 1000;
-    $('#map').on('mousewheel DOMMouseScroll',function(e){
+    $(window).on('mousewheel DOMMouseScroll',function(e){
         var delta = e.originalEvent.detail || e.originalEvent.wheelDelta;
         if(delta < 0){
             camera.position.z -= 20;
         }else{
             camera.position.z += 20;
         }
+    }).on('mousemove',function(e){
+        var camVector = new THREE.Vector3(e.pageX, e.pageY,0);
+        camera.lookAt(camVector);
+
+    }).on('resize',function(e){
+
+        renderer.setSize( window.innerWidth, window.innerHeight );
+        camera.aspect = (window.innerWidth / window.innerHeight);
     });
 
 
     function render() {
         stats.begin();
+
         requestAnimationFrame(render);
         renderer.render(scene, camera);
         stats.end();
