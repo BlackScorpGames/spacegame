@@ -11,5 +11,16 @@ $useCsae = new \SpaceGame\UseCase\ViewUniverseUseCase();
 $useCsae->process($request,$response);
 ?>
 <?php include 'header.php'?>
-
+<script>
+    var galaxies = [];
+    <?php foreach($response->galaxies as $galaxy): ?>
+        var galaxy = {
+            posX:<?= $galaxy->posX ?>,
+            posY:<?= $galaxy->posY ?>,
+            posZ:<?= $galaxy->posZ ?>,
+            name:'<?= $galaxy->galaxyName?>'
+        }
+    galaxies.push(galaxy);
+    <?php endforeach ?>
+</script>
 <?php include 'footer.php'?>
