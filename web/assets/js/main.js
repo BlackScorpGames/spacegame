@@ -22,7 +22,14 @@ $(function(){
     var geometry = new THREE.Geometry();
 
 
-    var material = new THREE.PointCloudMaterial( );
+    var material = new THREE.PointCloudMaterial( {
+        size: 80,
+        map: THREE.ImageUtils.loadTexture(
+            "assets/img/galactictop.png"
+        ),
+        blending: THREE.AdditiveBlending,
+        transparent: true
+    });
 
     for(var galaxyIndex in galaxies){
         var galaxy = galaxies[galaxyIndex];
@@ -36,6 +43,7 @@ $(function(){
     }
 
     var sphere = new THREE.PointCloud( geometry, material );
+    sphere.sortParticles = true;
     scene.add( sphere );
 
     camera.position.z = 1000;
