@@ -27,7 +27,9 @@ class MoveToLocationUseCase {
         shipname,
         e.engineId,
         enginename,
-        slot
+        slot,
+        s.posX AS shipPosX,
+        s.posY AS shipPosY
         FROM users u
         INNER JOIN ships s USING(userId)
         INNER JOIN ship_has_engines se USING(shipId)
@@ -52,6 +54,7 @@ class MoveToLocationUseCase {
             }
             $engine = new EngineEntity($row->engineId,$row->enginename);
             $ship->addEngine($engine,$row->slot);
+            $ship->setPosition($row->shipPosY,$row->shipPosX);
         }
         return $ship;
     }

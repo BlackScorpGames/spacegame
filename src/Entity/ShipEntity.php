@@ -9,7 +9,8 @@ class ShipEntity {
     private $shipName;
     private $owner;
     private $engines = array();
-
+    private $posY = 0;
+    private $posX = 0;
     /**
      * @param $shipId
      * @param $shipName
@@ -24,4 +25,25 @@ class ShipEntity {
     public function addEngine(EngineEntity $engine,$slot){
         $this->engines[$slot] = $engine;
     }
+    public function setPosition($posY,$posX){
+        $this->posX = $posX;
+        $this->posY = $posY;
+    }
+
+    /**
+     * @return int
+     */
+    public function getPosY()
+    {
+        return $this->posY;
+    }
+
+    /**
+     * @return int
+     */
+    public function getPosX()
+    {
+        return $this->posX;
+    }
+
 } 
