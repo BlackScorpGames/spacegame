@@ -10,7 +10,7 @@ class EngineEntity {
 
     public function __construct($engineId, $engineName)
     {
-        $this->engineId = $engineId;
+        $this->engineId =(int)$engineId;
         $this->engineName = $engineName;
     }
 

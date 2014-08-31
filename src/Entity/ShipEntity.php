@@ -18,7 +18,7 @@ class ShipEntity {
      */
     public function __construct($shipId,$shipName,UserEntity $owner)
     {
-        $this->shipId = $shipId;
+        $this->shipId = (int)$shipId;
         $this->owner = $owner;
         $this->shipName = $shipName;
     }
@@ -26,8 +26,8 @@ class ShipEntity {
         $this->engines[$slot] = $engine;
     }
     public function setPosition($posY,$posX){
-        $this->posX = $posX;
-        $this->posY = $posY;
+        $this->posX = (int)$posX;
+        $this->posY = (int)$posY;
     }
 
     /**

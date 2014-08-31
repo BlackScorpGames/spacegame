@@ -10,7 +10,7 @@ class UserEntity {
 
     public function __construct($userId, $userName)
     {
-        $this->userId = $userId;
+        $this->userId = (int)$userId;
         $this->userName = $userName;
     }
 
