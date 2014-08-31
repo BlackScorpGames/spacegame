@@ -1,6 +1,9 @@
 $(function () {
 
     var controls, scene, camera, renderer, stats;
+    init();
+    createScene();
+    animate();
 
     function init() {
         stats = new Stats();
@@ -12,6 +15,7 @@ $(function () {
         document.body.appendChild(stats.domElement);
 
         scene = new THREE.Scene();
+
         camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
         camera.position.z = 1000;
 
@@ -50,7 +54,7 @@ $(function () {
 
 
         var material = new THREE.PointCloudMaterial({
-            size: 80,
+            size: 100,
             map: THREE.ImageUtils.loadTexture(
                 "assets/img/galactictop.png"
             ),
@@ -72,7 +76,7 @@ $(function () {
         var sphere = new THREE.PointCloud(geometry, material);
         sphere.sortParticles = true;
         scene.add(sphere);
-        render();
+
     }
 
     function animate() {
@@ -80,10 +84,12 @@ $(function () {
         requestAnimationFrame(animate);
         controls.update();
         stats.update();
+        render();
     }
 
     function render() {
         renderer.render(scene, camera);
+
     }
 
 
@@ -99,8 +105,6 @@ $(function () {
     });
 
 
-    init();
-    createScene();
-    animate();
+
 
 });
