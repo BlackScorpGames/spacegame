@@ -16,22 +16,49 @@ class ViewUniverseUseCase {
 
         $countGalaxies = mt_rand($request->getMinimumAmount(),$request->getMaximumAmount());
 
-        $radiusX =  mt_rand($request->getMinimumUniverseAxis(),$request->getMaximumUniverseAxis());
-        $radiusY =  mt_rand($request->getMinimumUniverseAxis(),$request->getMaximumUniverseAxis());
-        $radiusZ = mt_rand($request->getMinimumUniverseAxis(),$request->getMaximumUniverseAxis());
+        $radiusX = 1000;
+        $radiusY = 500;
+        $radiusZ = 500;
 
+
+        $positions = array();
         for($countGalaxy = 1;$countGalaxy<=$countGalaxies;$countGalaxy++){
-             $galaxy = new GalaxyEntity($countGalaxy,'Galaxy-'.$countGalaxy);
+            $galaxy = new GalaxyEntity($countGalaxy,'Galaxy-'.$countGalaxy);
             $phi = rad2deg(mt_rand(0,360));
-            $theta = rad2deg(mt_rand(0,360));
+            $theta = rad2deg(mt_rand(0,pi()*4));
+
+            $maxY = round($radiusX * cos($theta)*sin($phi));
+            $maxX = round($radiusY * sin($theta)*sin($phi));
+            $maxZ = round($radiusZ * cos($phi));
 
 
-            $posY =round($radiusX * cos($theta)*sin($phi)) ;
-            $posX =round($radiusY * sin($theta)*sin($phi));
-            $posZ = round($radiusZ * cos($phi));
-            $galaxy->setPosition($posY,$posX,$posZ);
-            $galaxyView = new GalaxyView($galaxy);
-            $response->galaxies[] = $galaxyView;
+            if($maxX < 0){
+                $posX = mt_rand($maxX,0);
+            }else{
+                $posX = mt_rand(0,$maxX);
+            }
+
+            if($maxY < 0){
+                $posY = mt_rand($maxY,0);
+            }else{
+                $posY = mt_rand(0,$maxY);
+            }
+
+            if($maxZ < 0){
+                $posZ = mt_rand($maxZ,0);
+            }else{
+                $posZ = mt_rand(0,$maxZ);
+            }
+
+            $key = sprintf("%d/%d/%d",$posY,$posX,$posZ);
+            if(!isset($positions[$key])){
+                $galaxy->setPosition($posY,$posX,$posZ);
+                $galaxyView = new GalaxyView($galaxy);
+                $response->galaxies[] = $galaxyView;
+                $positions[$key] = true;
+            }
+
         }
     }
+
 } 
