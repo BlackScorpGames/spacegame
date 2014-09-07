@@ -13,9 +13,12 @@ DROP TABLE IF EXISTS `users` ;
 
 CREATE TABLE IF NOT EXISTS `users` (
   `userId` INT UNSIGNED NOT NULL AUTO_INCREMENT,
-  `username` VARCHAR(45) NOT NULL,
+  `email` VARCHAR(255) NOT NULL,
+  `password` VARCHAR(60) NOT NULL,
   PRIMARY KEY (`userId`))
 ENGINE = InnoDB;
+
+CREATE UNIQUE INDEX `email_UNIQUE` ON `users` (`email` ASC);
 
 
 -- -----------------------------------------------------

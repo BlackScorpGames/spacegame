@@ -22,7 +22,7 @@ class MoveToLocationUseCase {
         $sql = "
         SELECT
         u.userId,
-        username,
+        email,
         s.shipId,
         shipname,
         e.engineId,
@@ -34,7 +34,7 @@ class MoveToLocationUseCase {
         INNER JOIN ships s USING(userId)
         INNER JOIN ship_has_engines se USING(shipId)
         INNER JOIN engines e USING(engineId)
-        WHERE u.username = :username
+        WHERE u.email = :username
         ";
         $statement = $this->connection->prepare($sql);
         $parameters = array(
