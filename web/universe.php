@@ -23,4 +23,9 @@ $useCsae->process($request,$response);
     galaxies.push(galaxy);
     <?php endforeach ?>
 </script>
+
 <?php include 'footer.php'?>
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r68/three.min.js"></script>
+<script src="assets/js/stats.js"></script>
+<script src="assets/js/TrackballControls.js"></script>
+<script src="assets/js/main.js"></script>
