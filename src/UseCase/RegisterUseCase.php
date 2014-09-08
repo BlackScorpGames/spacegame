@@ -6,14 +6,16 @@ namespace SpaceGame\UseCase;
 use PDO;
 use SpaceGame\Request\RegisterRequest;
 use SpaceGame\Response\RegisterResponse;
+use SpaceGame\Service\PasswordHasherService;
 
 class RegisterUseCase
 {
     private $connection;
-
-    public function __construct(PDO $connection)
+    private $passwordHasher;
+    public function __construct(PDO $connection,PasswordHasherService $passwordHasher)
     {
         $this->connection = $connection;
+        $this->passwordHasher = $passwordHasher;
     }
 
     private function assignValues(RegisterRequest $request, RegisterResponse $response)
@@ -57,7 +59,7 @@ class RegisterUseCase
     private function createUser(RegisterRequest $request, RegisterResponse $response)
     {
         $sql = "INSERT INTO users (email,password) VALUES (:email,:password)";
-        $passwordHash = password_hash($request->getPassword(), PASSWORD_BCRYPT);
+        $passwordHash = $this->passwordHasher->hash($request->getPassword());
         $statement = $this->connection->prepare($sql);
         $statement->execute(
             array(
@@ -69,12 +71,13 @@ class RegisterUseCase
 
     public function process(RegisterRequest $request, RegisterResponse $response)
     {
+        $response->proceed = true;
         $this->assignValues($request, $response);
         $this->validateValues($request, $response);
         if ($response->failed) {
             return;
         }
         $this->createUser($request, $response);
-
+        $response->messages[]=_('Registration successful');
     }
 } 

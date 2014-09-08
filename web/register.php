@@ -1,12 +1,12 @@
 <?php
 require_once __DIR__ . '/../bootstrap.php';
-$title = 'Spacegame';
+$title = 'Spacegame - Register';
 $response = new \SpaceGame\Response\RegisterResponse();
 
 if(isset($_POST['register'])){
 
     $request = new \SpaceGame\Request\RegisterRequest($_POST['email'],$_POST['password'],$_POST['passwordConfirm']);
-    $useCase = new \SpaceGame\UseCase\RegisterUseCase($pdo);
+    $useCase = new \SpaceGame\UseCase\RegisterUseCase($pdo,$passwordHasher);
     $useCase->process($request,$response);
 }
 ?>
@@ -17,16 +17,8 @@ if(isset($_POST['register'])){
         <div class="panel panel-default">
             <div class="panel-heading"><?= _('Create new account') ?></div>
             <div class="panel-body">
-                <?php if($response->failed):?>
-                    <div class="alert alert-danger" role="alert">
-                        <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                    <ul >
-                    <?php foreach($response->errors as $error):?>
-                     <li> <?= _($error) ?></li>
-                    <?php endforeach;?>
-                    </ul>
-                    </div>
-                <?php endif;?>
+            <?php require_once __DIR__.'/successMessage.php' ?>
+            <?php require_once __DIR__.'/errorMessage.php' ?>
                 <form role="form" method="POST">
                     <div class="form-group">
                         <label for="email"><?= _('Email address') ?></label>
