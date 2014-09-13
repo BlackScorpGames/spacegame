@@ -1,7 +1,10 @@
 <?php
+require_once __DIR__.'/isLoggedIn.php';
 require_once __DIR__.'/../bootstrap.php';
 $title = 'Spacegame';
 $response = new \SpaceGame\Response\LoginResponse();
+
+
 
 if(isset($_POST['login'])){
     $request = new \SpaceGame\Request\LoginRequest($_POST['email'],$_POST['password']);
@@ -10,6 +13,7 @@ if(isset($_POST['login'])){
 
     if(!$response->failed){
         $_SESSION['userId'] = $response->userId;
+        header( "refresh:1;url=game.php" );
     }
 }
 ?>

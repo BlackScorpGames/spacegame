@@ -5,27 +5,70 @@ namespace SpaceGame\Request;
 
 
 class ViewUniverseRequest {
-    private $username = '';
+    private $userId = 0;
     private $seed = 0;
     private $maximumAmount = 0;
     private $minimumAmount = 0;
-    private $maximumUniverseAxis = 0;
-    private $minimumUniverseAxis = 0;
-    public function __construct($username,$maximumAmount,$minimumAmount,$maximumUniverseAxis,$minimumUniverseAxis)
+    private $radiusZ = 0;
+    private $radiusX = 0;
+    private $radiusY = 0;
+    public function __construct($userId,$maximumAmount,$minimumAmount,$radiusX,$radiusY,$radiusZ)
     {
-        $this->username = $username;
+        $this->userId = $userId;
         $this->maximumAmount = $maximumAmount;
         $this->minimumAmount = $minimumAmount;
-        $this->maximumUniverseAxis = $maximumUniverseAxis;
-        $this->minimumUniverseAxis = $minimumUniverseAxis;
+        $this->radiusX = $radiusX;
+        $this->radiusZ = $radiusZ;
+        $this->radiusY = $radiusY;
+
     }
 
     /**
-     * @return string
+     * @return int
      */
-    public function getUsername()
+    public function getUserId()
     {
-        return $this->username;
+        return $this->userId;
+    }
+
+    /**
+     * @return int
+     */
+    public function getRadiusZ()
+    {
+        return $this->radiusZ;
+    }
+
+    /**
+     * @return int
+     */
+    public function getRadiusY()
+    {
+        return $this->radiusY;
+    }
+
+    /**
+     * @return int
+     */
+    public function getRadiusX()
+    {
+        return $this->radiusX;
+    }
+
+    /**
+     * @return int
+     */
+    public function getMinimumAmount()
+    {
+        return $this->minimumAmount;
+    }
+
+    /**
+     * @return int
+     */
+    public function getMaximumAmount()
+    {
+        return $this->maximumAmount;
     }
 
     /**
@@ -44,36 +87,6 @@ class ViewUniverseRequest {
         return $this->seed;
     }
 
-    /**
-     * @return int
-     */
-    public function getMaximumAmount()
-    {
-        return $this->maximumAmount;
-    }
 
-    /**
-     * @return int
-     */
-    public function getMaximumUniverseAxis()
-    {
-        return $this->maximumUniverseAxis;
-    }
-
-    /**
-     * @return int
-     */
-    public function getMinimumAmount()
-    {
-        return $this->minimumAmount;
-    }
-
-    /**
-     * @return int
-     */
-    public function getMinimumUniverseAxis()
-    {
-        return $this->minimumUniverseAxis;
-    }
 
 } 

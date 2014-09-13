@@ -16,16 +16,17 @@ class ViewUniverseUseCase {
 
         $countGalaxies = mt_rand($request->getMinimumAmount(),$request->getMaximumAmount());
 
-        $radiusX = 1000;
-        $radiusY = 500;
-        $radiusZ = 500;
+        $radiusX = $request->getRadiusX();
+        $radiusY = $request->getRadiusY();
+        $radiusZ = $request->getRadiusZ();
 
 
         $positions = array();
+
         for($countGalaxy = 1;$countGalaxy<=$countGalaxies;$countGalaxy++){
             $galaxy = new GalaxyEntity($countGalaxy,'Galaxy-'.$countGalaxy);
             $phi = rad2deg(mt_rand(0,360));
-            $theta = rad2deg(mt_rand(0,pi()*4));
+            $theta = rad2deg(mt_rand(0,360));
 
             $maxY = round($radiusX * cos($theta)*sin($phi));
             $maxX = round($radiusY * sin($theta)*sin($phi));

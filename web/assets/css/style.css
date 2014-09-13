@@ -15,3 +15,7 @@ header h1{
     color: #ffffff;
     background-color: #000;
 }
+.xdebug-var-dump{
+    position: absolute;
+    z-index: 10000;
+}

@@ -1,13 +1,11 @@
 <?php
 $seed = 123456789;
-$universe = array(
-    'min'=>-1000,
-    'max'=>1000
+$solarSystems = array(
+    'max'=>10000,
+    'min'=>1000
 );
-$galaxies = array(
-    'amount'=>array(
-        'min'=> 100,
-        'max'=> 10000
-    )
-
+$galaxy = array(
+    'radiusY' => 10000,
+    'radiusX' => 10000,
+    'radiusZ' => 10000
 );
