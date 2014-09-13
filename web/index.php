@@ -66,5 +66,5 @@ if(isset($_POST['login'])){
         </div>
     </div>
 </div>
-
+<?php require_once __DIR__.'/scripts.php'?>
 <?php require_once __DIR__.'/footer.php'; ?>

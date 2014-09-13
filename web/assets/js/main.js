@@ -1,6 +1,6 @@
 $(function () {
 
-    var controls, scene, camera, renderer, stats,raycaster,geometry,sphere,mouse = {x:0,y:0},projector;
+    var controls, scene, camera, renderer, stats,raycaster,geometry,sphere,mouse = {x:0,y:0},projector,galaxy,theta = 0,radius = 5000;
     init();
     createScene();
     animate();
@@ -17,8 +17,9 @@ $(function () {
         scene = new THREE.Scene();
 
         camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 10000);
-        //camera.position.z = 1000;
         camera.position.x = 1000;
+        camera.position.y = -1000;
+        camera.position.z = 1000;
         renderer = new THREE.WebGLRenderer();
 
         renderer.setSize(window.innerWidth, window.innerHeight);
@@ -51,35 +52,19 @@ $(function () {
     }
 
     function createScene() {
-         geometry = new THREE.Geometry();
-
-
-
-        var material = new THREE.PointCloudMaterial({
-
-
-            size: 12,
-            map: THREE.ImageUtils.loadTexture(
-                "assets/img/galactictop.png"
-            ),
+        var galaxyGeometry = new THREE.BoxGeometry( 10000,10000,1 );
+         var galaxyBackground = THREE.ImageUtils.loadTexture("assets/img/galactictop.png");
+        var galaxyMaterial = new THREE.MeshBasicMaterial({
+            map:galaxyBackground,
             blending: THREE.AdditiveBlending,
             transparent: true
         });
 
-        for (var galaxyIndex in galaxies) {
-            var galaxy = galaxies[galaxyIndex];
-            var vector = new THREE.Vector3();
-            vector.y = galaxy.posY;
-            vector.z = galaxy.posZ;
-            vector.x = galaxy.posX;
+        galaxy = new THREE.Mesh(galaxyGeometry,galaxyMaterial);
 
-            geometry.vertices.push(vector);
 
-        }
 
-         sphere = new THREE.PointCloud(geometry, material);
-        sphere.sortParticles = true;
-        scene.add(sphere);
+        scene.add(galaxy);
 
     }
 
@@ -88,19 +73,23 @@ $(function () {
         requestAnimationFrame(animate);
         controls.update();
         stats.update();
-
-       var vector = new THREE.Vector3( mouse.x, mouse.y, 1 );
-
-        projector.unprojectVector( vector, camera );
-
-        raycaster.ray.set( camera.position, vector.sub( camera.position ).normalize() );
-
-        var intersects =  raycaster.intersectObject(sphere );
-        if ( intersects.length > 0 ) {
-          //  intersects[ 0 ].object.material.color.setHex( Math.random() * 0xffffff );
+        theta += 0.1;
+        if(theta%180 == 0){
+            console.log(theta);
 
 
         }
+
+        galaxy.rotation.z = Math.cos( THREE.Math.degToRad(theta ));//Math.cos( THREE.Math.degToRad( Math.PI+theta ) ) ;
+
+       // camera.lookAt( scene.position );
+       //var vector = new THREE.Vector3( mouse.x, mouse.y, 1 );
+
+        //projector.unprojectVector( vector, camera );
+
+        //raycaster.ray.set( camera.position, vector.sub( camera.position ).normalize() );
+
+
         render();
     }
 

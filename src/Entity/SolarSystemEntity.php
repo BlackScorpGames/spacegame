@@ -4,16 +4,16 @@
 namespace SpaceGame\Entity;
 
 
-class GalaxyEntity {
-    private $galaxyId = 0;
+class SolarSystemEntity {
+    private $solarSystemId = 0;
     private $name = '';
     private $posX = 0;
     private $posY = 0;
     private $posZ = 0;
 
-    public function __construct($galaxyId, $name)
+    public function __construct($solarSystemId, $name)
     {
-        $this->galaxyId = $galaxyId;
+        $this->solarSystemId = $solarSystemId;
         $this->name = $name;
     }
     public function setPosition($posY,$posX,$posZ){
@@ -25,10 +25,12 @@ class GalaxyEntity {
     /**
      * @return int
      */
-    public function getGalaxyId()
+    public function getSolarSystemId()
     {
-        return $this->galaxyId;
+        return $this->solarSystemId;
     }
+
+
 
     /**
      * @return string

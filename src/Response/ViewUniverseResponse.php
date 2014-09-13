@@ -4,11 +4,11 @@
 namespace SpaceGame\Response;
 
 
-use SpaceGame\View\GalaxyView;
+use SpaceGame\View\SolarSystemView;
 
 class ViewUniverseResponse {
     /**
-     * @var GalaxyView[]
+     * @var SolarSystemView[]
      */
-    public $galaxies = array();
+    public $solarSystems = array();
 } 

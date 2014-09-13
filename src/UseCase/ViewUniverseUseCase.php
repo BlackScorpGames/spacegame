@@ -5,16 +5,18 @@ namespace SpaceGame\UseCase;
 
 
 use SpaceGame\Entity\GalaxyEntity;
+use SpaceGame\Entity\SolarSystemEntity;
 use SpaceGame\Request\ViewUniverseRequest;
 use SpaceGame\Response\ViewUniverseResponse;
 use SpaceGame\View\GalaxyView;
+use SpaceGame\View\SolarSystemView;
 
 class ViewUniverseUseCase {
 
     public function process(ViewUniverseRequest $request,ViewUniverseResponse $response){
         mt_srand($request->getSeed());
 
-        $countGalaxies = mt_rand($request->getMinimumAmount(),$request->getMaximumAmount());
+        $countSolarSystems = mt_rand($request->getMinimumAmount(),$request->getMaximumAmount());
 
         $radiusX = $request->getRadiusX();
         $radiusY = $request->getRadiusY();
@@ -23,8 +25,8 @@ class ViewUniverseUseCase {
 
         $positions = array();
 
-        for($countGalaxy = 1;$countGalaxy<=$countGalaxies;$countGalaxy++){
-            $galaxy = new GalaxyEntity($countGalaxy,'Galaxy-'.$countGalaxy);
+        for($countSolarSystem = 1;$countSolarSystem<=$countSolarSystems;$countSolarSystem++){
+            $solarSystem = new SolarSystemEntity($countSolarSystem,'SolarSystem-'.$countSolarSystem);
             $phi = rad2deg(mt_rand(0,360));
             $theta = rad2deg(mt_rand(0,360));
 
@@ -53,9 +55,9 @@ class ViewUniverseUseCase {
 
             $key = sprintf("%d/%d/%d",$posY,$posX,$posZ);
             if(!isset($positions[$key])){
-                $galaxy->setPosition($posY,$posX,$posZ);
-                $galaxyView = new GalaxyView($galaxy);
-                $response->galaxies[] = $galaxyView;
+                $solarSystem->setPosition($posY,$posX,$posZ);
+                $solarSystemView = new SolarSystemView($solarSystem);
+                $response->solarSystems[] = $solarSystemView;
                 $positions[$key] = true;
             }
 
