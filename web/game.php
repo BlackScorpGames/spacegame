@@ -1,7 +1,8 @@
 <?php
-require_once __DIR__.'/isLoggedIn.php';
+
 
 require_once __DIR__.'/../bootstrap.php';
+require_once __DIR__.'/isLoggedIn.php';
 require_once __DIR__.'/../config/universe.php';
 $userId = $_SESSION['userId'];
 $maximumAmount = $solarSystems['max'];

@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__.'/isLoggedIn.php';
+
 require_once __DIR__.'/../bootstrap.php';
 $title = 'Spacegame';
 $response = new \SpaceGame\Response\LoginResponse();
@@ -7,8 +7,9 @@ $response = new \SpaceGame\Response\LoginResponse();
 
 
 if(isset($_POST['login'])){
+
     $request = new \SpaceGame\Request\LoginRequest($_POST['email'],$_POST['password']);
-    $useCase = new \SpaceGame\UseCase\LoginUseCase($pdo,$passwordHasher);
+    $useCase = new \SpaceGame\UseCase\LoginUseCase($pdo(),$passwordHasher());
     $useCase->process($request,$response);
 
     if(!$response->failed){

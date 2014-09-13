@@ -6,7 +6,7 @@ $response = new \SpaceGame\Response\RegisterResponse();
 if(isset($_POST['register'])){
 
     $request = new \SpaceGame\Request\RegisterRequest($_POST['email'],$_POST['password'],$_POST['passwordConfirm']);
-    $useCase = new \SpaceGame\UseCase\RegisterUseCase($pdo,$passwordHasher);
+    $useCase = new \SpaceGame\UseCase\RegisterUseCase($pdo(),$passwordHasher());
     $useCase->process($request,$response);
 }
 ?>

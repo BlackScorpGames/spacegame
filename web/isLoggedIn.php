@@ -1,4 +1,4 @@
 <?php
-if(isset($_SESSION['userId'])){
-    header( "location:game.php" );
+if(!isset($_SESSION['userId'])){
+    header( "location:index.php" );
 }

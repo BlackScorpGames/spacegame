@@ -15,6 +15,7 @@ class LoginUseCase {
     public function __construct(PDO $connection,PasswordHasherService $passwordHasher){
         $this->connection = $connection;
         $this->passwordHasher = $passwordHasher;
+
     }
 
     private function assignValues(LoginRequest $request, LoginResponse $response)
