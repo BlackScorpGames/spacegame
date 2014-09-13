@@ -6,33 +6,36 @@ $(function () {
     animate();
 
     function init() {
+        var sceneDiv = $('#scene');
+
         stats = new Stats();
         stats.setMode(0);
         stats.domElement.style.position = 'absolute';
         stats.domElement.style.left = '0px';
         stats.domElement.style.top = '0px';
         stats.domElement.style.zIndex = 2;
-        document.body.appendChild(stats.domElement);
+        sceneDiv.append(stats.domElement);
+
 
         scene = new THREE.Scene();
 
         camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 10000);
-        camera.position.x = 1000;
-        camera.position.y = -1000;
-        camera.position.z = 1000;
+
+
+        camera.position.x = -343;
+        camera.position.y = -1800;
+        camera.position.z = -560;
+
+
         renderer = new THREE.WebGLRenderer();
 
         renderer.setSize(window.innerWidth, window.innerHeight);
 
-        renderer.domElement.id = 'map';
-        renderer.domElement.style.zIndex = 0;
-        renderer.domElement.style.top = 0;
-        renderer.domElement.style.left = 0;
+
         renderer.domElement.style.position = 'absolute';
+        sceneDiv.append(renderer.domElement);
 
-        document.body.appendChild(renderer.domElement);
-
-        controls = new THREE.TrackballControls(camera);
+        controls = new THREE.TrackballControls(camera,renderer.domElement);
 
         controls.rotateSpeed = 1.0;
         controls.zoomSpeed = 1.2;
@@ -44,9 +47,11 @@ $(function () {
         controls.staticMoving = true;
         controls.dynamicDampingFactor = 0.3;
 
-        controls.keys = [ 65, 83, 68 ];
+
+
 
         controls.addEventListener('change', render);
+
         projector = new THREE.Projector();
         raycaster = new THREE.Raycaster();
     }
@@ -73,16 +78,12 @@ $(function () {
         requestAnimationFrame(animate);
         controls.update();
         stats.update();
-        theta += 0.1;
-        if(theta%180 == 0){
-            console.log(theta);
 
 
-        }
+        theta +=0.1;
+        galaxy.rotation.z =  THREE.Math.degToRad(theta );//Math.cos( THREE.Math.degToRad( Math.PI+theta ) ) ;
 
-        galaxy.rotation.z = Math.cos( THREE.Math.degToRad(theta ));//Math.cos( THREE.Math.degToRad( Math.PI+theta ) ) ;
-
-       // camera.lookAt( scene.position );
+      // camera.lookAt( scene.position );
        //var vector = new THREE.Vector3( mouse.x, mouse.y, 1 );
 
         //projector.unprojectVector( vector, camera );
