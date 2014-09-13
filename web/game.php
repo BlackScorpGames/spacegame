@@ -12,6 +12,7 @@ $title  = 'Spacegame';
                 <h1 class="text-center header1"><?= _('Your name')?></h1>
 
             </div>
+
             <div class="col-md-3 col-xs-3"></div>
 
             <div class="col-md-6 col-xs-6">
@@ -34,6 +35,34 @@ $title  = 'Spacegame';
                 <img src="assets/img/faction3.jpg" class="faction img-responsive">
             </div>
         </div>
+        <div class="row">
+            <div class="col-md-12 col-xs-12">
+                <h1 class="text-center header1"><?= _('Choose a class')?></h1>
+
+            </div>
+            <div class="col-md-3 col-xs-3 text-center">
+                <img src="assets/img/faction1.jpg" class="class img-responsive">
+            </div>
+            <div class="col-md-3 col-xs-3 text-center">
+                <img src="assets/img/faction2.jpg" class="class selected img-responsive">
+            </div>
+            <div class="col-md-3 col-xs-3 text-center">
+                <img src="assets/img/faction3.jpg" class="class img-responsive">
+            </div>
+            <div class="col-md-3 col-xs-3 text-center">
+                <img src="assets/img/faction3.jpg" class="class img-responsive">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3 col-xs-3"></div>
+
+            <div class="col-md-6 col-xs-6">
+              <button type="submit" name="newgame" class="btn btn-default col-xs-12 col-md-12">Play</button>
+            </div>
+            <div class="col-md-3 col-xs-3"></div>
+
+        </div>
+
     </div>
 
 
