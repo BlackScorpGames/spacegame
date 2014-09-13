@@ -8,20 +8,30 @@ $title  = 'Spacegame';
 <div id="interface">
     <div class="container">
         <div class="row">
+            <div class="col-md-12 col-xs-12">
+                <h1 class="text-center header1"><?= _('Your name')?></h1>
+
+            </div>
             <div class="col-md-3 col-xs-3"></div>
 
             <div class="col-md-6 col-xs-6">
-                <input class="form-control">
+                <input class="form-control" type="text" >
             </div>
             <div class="col-md-3 col-xs-3"></div>
         </div>
         <div class="row">
             <div class="col-md-12 col-xs-12">
-                <ul class="fraction-selector clearfix">
-                    <li class="fraction test1 selected"></li>
-                    <li class="fraction test1"></li>
-                </ul>
+            <h1 class="text-center header1"><?= _('Choose a faction')?></h1>
 
+            </div>
+            <div class="col-md-4 col-xs-4 text-center">
+                <img src="assets/img/faction1.jpg" class="faction img-responsive">
+            </div>
+            <div class="col-md-4 col-xs-4 text-center">
+                <img src="assets/img/faction2.jpg" class="faction selected img-responsive">
+            </div>
+            <div class="col-md-4 col-xs-4 text-center">
+                <img src="assets/img/faction3.jpg" class="faction img-responsive">
             </div>
         </div>
     </div>
