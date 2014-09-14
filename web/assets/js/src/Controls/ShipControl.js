@@ -31,80 +31,53 @@ THREE.ShipControl = function ( object, domElement ) {
 }
 
 THREE.ShipControl.prototype.update = function(delta){
-    this.handleKeys();
-
-
+    this.handleKeys(delta);
 }
-THREE.ShipControl.prototype.handleKeys = function(){
-    if(!this.keyboard.isDown()){
-        rotate = false;
+THREE.ShipControl.prototype.handleKeys = function(delta){
 
-        return false;
-    }
+    var moveDistance = 200 * delta; // 200 pixels per second
+    var rotateAngle = Math.PI / 2 * delta;   // pi/2 radians (90 degrees) per second
 
     if(this.keyboard.isDown('W')){
-        this.object.position.z -= 10;
-        this.camera.position.z -= 10;
 
+        this.object.translateZ( -moveDistance );
     }
     if(this.keyboard.isDown('S')){
-        this.object.position.z += 10;
-        this.camera.position.z += 10;
+        this.object.translateZ( moveDistance );
+    }
+
+    if(this.keyboard.isDown('Q')){
+        this.object.translateX( -moveDistance );
 
     }
+    if(this.keyboard.isDown('E')){
+        this.object.translateX( moveDistance );
+    }
+
     if(this.keyboard.isDown('A')){
-        this.object.position.x -= 10;
-
-        this.rotationSpeed += 0.01;
-        if(this.rotationSpeed > 1){
-            this.rotationSpeed = 1;
-        }
-        this.object.rotation.z =this.rotationSpeed;
-
-
-        this.camera.position.x -= 10;
+        this.object.rotateOnAxis( new THREE.Vector3(0,1,0), rotateAngle);
+        //this.object.rotateOnAxis( new THREE.Vector3(0,0,1), 0.1);
     }
     if(this.keyboard.isDown('D')){
-        this.object.position.x += 10;
-        this.camera.position.x += 10;
-        this.rotationSpeed -= 0.01;
-        if(this.rotationSpeed < -1){
-            this.rotationSpeed = -1;
-        }
-        this.object.rotation.z = this.rotationSpeed;
+        this.object.rotateOnAxis( new THREE.Vector3(0,1,0), -rotateAngle);
+       //this.object.rotateOnAxis( new THREE.Vector3(0,0,1), -0.1);
+    }
 
-    }
-    if(this.keyboard.isDown('W') && this.keyboard.isDown('A')){
-        this.object.rotation.y  = this.object.rotation.z;
-    }
-    if(this.keyboard.isDown('W') && this.keyboard.isDown('D')){
-        this.object.rotation.y  = this.object.rotation.z;
-    }
-    if(this.keyboard.isDown('LEFT_ARROW')){
-        this.object.rotation.y += 0.1;
-    }
-    if(this.keyboard.isDown('RIGHT_ARROW')){
-        this.object.rotation.y -= 0.1;
-    }
-    return ;
-    rotate = false;
-    if(this.keyboard.isDown('LEFT_ARROW')){
-        this.xAxis +=1;
-        rotate = true;
-    }
-    if(this.keyboard.isDown('RIGHT_ARROW')){
-        this.xAxis -=1;
-        rotate = true;
-    }
-    if(rotate){
-        radius = 10;
-        var rotationX = radius * Math.sin(THREE.Math.degToRad(this.xAxis));
-        var rotationY = radius * Math.cos(THREE.Math.degToRad(this.xAxis));
-        this.camera.position.x = rotationX;
-        this.camera.position.z = rotationY;
+    var relativeCameraOffset = new THREE.Vector3(0,20,20);
 
-        this.camera.lookAt( this.object.position );
+    var cameraOffset = relativeCameraOffset.applyMatrix4( this.object.matrixWorld );
+
+    if(this.camera.position.x <= cameraOffset.x){
+        this.camera.position.x += 2;
     }
+    if(this.camera.position.x >= cameraOffset.x){
+        this.camera.position.x -= 2;
+    }
+
+  //  this.camera.position.x = cameraOffset.x;
+    this.camera.position.y = cameraOffset.y;
+    this.camera.position.z = cameraOffset.z;
+    this.camera.lookAt( this.object.position );
 
 }
 THREE.ShipControl.prototype.getCamera = function(){
