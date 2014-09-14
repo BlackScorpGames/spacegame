@@ -80,21 +80,14 @@ $(function () {
         stats.update();
 
 
-        theta +=0.1;
-        galaxy.rotation.z =  THREE.Math.degToRad(theta );//Math.cos( THREE.Math.degToRad( Math.PI+theta ) ) ;
-
-      // camera.lookAt( scene.position );
-       //var vector = new THREE.Vector3( mouse.x, mouse.y, 1 );
-
-        //projector.unprojectVector( vector, camera );
-
-        //raycaster.ray.set( camera.position, vector.sub( camera.position ).normalize() );
 
 
         render();
     }
 
     function render() {
+
+
         renderer.render(scene, camera);
 
     }

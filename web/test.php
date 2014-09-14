@@ -7,8 +7,9 @@ $title  = 'Spacegame';
     <div id="scene"></div>
 <script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r68/three.min.js"></script>
 <script src="assets/js/stats.js"></script>
-    <script src="assets/js/FlyControls.js"></script>
-<script src="assets/js/TrackballControls.js"></script>
+    <script src="assets/js/src/Utils/Keyboard.js"></script>
+    <script src="assets/js/src/Controls/ShipControl.js"></script>
+
 <script src="assets/js/test.js"></script>
 
 

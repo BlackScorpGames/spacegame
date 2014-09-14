@@ -22,12 +22,13 @@ $(function(){
         scene.add( new THREE.AmbientLight( 0xcccccc ) );
 
          clock = new THREE.Clock();
-
+        /*
         camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 10000);
         camera.position.x = 100;
 
-
-
+        */
+        var axisHelper = new THREE.AxisHelper( 100 );
+        scene.add( axisHelper );
         renderer = new THREE.WebGLRenderer();
         renderer.setSize(window.innerWidth, window.innerHeight);
         renderer.domElement.style.left = '0';
@@ -70,7 +71,7 @@ $(function(){
         stats.update();
         if(controls != undefined){
             var delta = clock.getDelta();
-
+            /*
             var relativeCameraOffset = new THREE.Vector3(0,10,10);
 
             var cameraOffset = relativeCameraOffset.applyMatrix4( myShip.matrixWorld );
@@ -79,6 +80,7 @@ $(function(){
             camera.position.y = cameraOffset.y;
             camera.position.z = cameraOffset.z;
             camera.lookAt( myShip.position );
+        */
             controls.update( delta );
         }
 
@@ -161,12 +163,16 @@ $(function(){
             myShip.scale.set( 10, 10, 10 );
 
             scene.add(myShip);
+            controls = new THREE.ShipControl(myShip);
+            camera = controls.getCamera();
+
+            /*
             controls = new THREE.FlyControls( myShip);
             controls.movementSpeed = 1000;
             controls.domElement = renderer.domElement;
             controls.rollSpeed = Math.PI / 24;
             controls.autoForward = false;
-            controls.dragToLook = false;
+            controls.dragToLook = false;*/
         } );
     }
     $(window).on('resize', function (e) {
