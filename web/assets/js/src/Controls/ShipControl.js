@@ -9,7 +9,7 @@ THREE.ShipControl = function ( object, domElement ) {
 
 
     this.relativeCameraOffset = new THREE.Vector3(0,200,200);
-
+    this.rotationSpeed = 0;
     this.cameraOffset = this.relativeCameraOffset.applyMatrix4( this.object.matrixWorld );
     this.xAxis = 0;
     this.camera.position.x = this.cameraOffset.x;
@@ -38,7 +38,7 @@ THREE.ShipControl.prototype.update = function(delta){
 THREE.ShipControl.prototype.handleKeys = function(){
     if(!this.keyboard.isDown()){
         rotate = false;
-        rotationSpeed = 0;
+
         return false;
     }
 
@@ -55,11 +55,11 @@ THREE.ShipControl.prototype.handleKeys = function(){
     if(this.keyboard.isDown('A')){
         this.object.position.x -= 10;
 
-        rotationSpeed += 0.01;
-        if(rotationSpeed > 1){
-            rotationSpeed = 1;
+        this.rotationSpeed += 0.01;
+        if(this.rotationSpeed > 1){
+            this.rotationSpeed = 1;
         }
-        this.object.rotation.z =rotationSpeed;
+        this.object.rotation.z =this.rotationSpeed;
 
 
         this.camera.position.x -= 10;
@@ -67,11 +67,11 @@ THREE.ShipControl.prototype.handleKeys = function(){
     if(this.keyboard.isDown('D')){
         this.object.position.x += 10;
         this.camera.position.x += 10;
-        rotationSpeed -= 0.01;
-        if(rotationSpeed < -1){
-            rotationSpeed = -1;
+        this.rotationSpeed -= 0.01;
+        if(this.rotationSpeed < -1){
+            this.rotationSpeed = -1;
         }
-        this.object.rotation.z = rotationSpeed;
+        this.object.rotation.z = this.rotationSpeed;
 
     }
     if(this.keyboard.isDown('W') && this.keyboard.isDown('A')){
