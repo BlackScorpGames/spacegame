@@ -1,169 +1,158 @@
-if ( ! Detector.webgl ) Detector.addGetWebGLMessage();
 
-var container, stats;
-var camera, scene, renderer, particles, geometry, materials = [], parameters, i, h, color;
-var mouseX = 0, mouseY = 0;
+/*
+ Three.js "tutorials by example"
+ Author: Lee Stemkoski
+ Date: July 2013 (three.js v59dev)
+ */
 
-var windowHalfX = window.innerWidth / 2;
-var windowHalfY = window.innerHeight / 2;
+// MAIN
+
+// standard global variables
+var container, scene, camera, renderer, controls, stats;
+var keyboard = new THREEx.KeyboardState();
+var clock = new THREE.Clock();
+// custom global variables
+var cube;
 
 init();
 animate();
 
-function init() {
-
-    container = document.createElement( 'div' );
-    document.body.appendChild( container );
-
-    camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 1, 3000 );
-    camera.position.z = 1000;
-
+// FUNCTIONS 		
+function init()
+{
+    // SCENE
     scene = new THREE.Scene();
-    scene.fog = new THREE.FogExp2( 0x000000, 0.0007 );
-
-    geometry = new THREE.Geometry();
-
-    for ( i = 0; i < 20000; i ++ ) {
-
-        var vertex = new THREE.Vector3();
-        vertex.x = Math.random() * 2000 - 1000;
-        vertex.y = Math.random() * 2000 - 1000;
-        vertex.z = Math.random() * 2000 - 1000;
-
-        geometry.vertices.push( vertex );
-
-    }
-
-    parameters = [
-        [ [1, 1, 0.5], 5 ],
-        [ [0.95, 1, 0.5], 4 ],
-        [ [0.90, 1, 0.5], 3 ],
-        [ [0.85, 1, 0.5], 2 ],
-        [ [0.80, 1, 0.5], 1 ]
-    ];
-
-    for ( i = 0; i < parameters.length; i ++ ) {
-
-        color = parameters[i][0];
-        size  = parameters[i][1];
-
-        materials[i] = new THREE.PointCloudMaterial( { size: size } );
-
-        particles = new THREE.PointCloud( geometry, materials[i] );
-
-        particles.rotation.x = Math.random() * 6;
-        particles.rotation.y = Math.random() * 6;
-        particles.rotation.z = Math.random() * 6;
-
-        scene.add( particles );
-
-    }
-
-    renderer = new THREE.WebGLRenderer();
-    renderer.setSize( window.innerWidth, window.innerHeight );
+    // CAMERA
+    var SCREEN_WIDTH = window.innerWidth, SCREEN_HEIGHT = window.innerHeight;
+    var VIEW_ANGLE = 45, ASPECT = SCREEN_WIDTH / SCREEN_HEIGHT, NEAR = 0.1, FAR = 20000;
+    camera = new THREE.PerspectiveCamera( VIEW_ANGLE, ASPECT, NEAR, FAR);
+    scene.add(camera);
+    camera.position.set(0,150,400);
+    camera.lookAt(scene.position);
+    // RENDERER
+    if ( Detector.webgl )
+        renderer = new THREE.WebGLRenderer( {antialias:true} );
+    else
+        renderer = new THREE.CanvasRenderer();
+    renderer.setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
+    container = document.getElementById( 'ThreeJS' );
     container.appendChild( renderer.domElement );
+    // EVENTS
+    THREEx.WindowResize(renderer, camera);
+    THREEx.FullScreen.bindKey({ charCode : 'm'.charCodeAt(0) });
 
+    // CONTROLS
+    // MUST REMOVE THIS LINE!!!
+    // controls = ...
+
+    // STATS
     stats = new Stats();
     stats.domElement.style.position = 'absolute';
-    stats.domElement.style.top = '0px';
+    stats.domElement.style.bottom = '0px';
+    stats.domElement.style.zIndex = 100;
     container.appendChild( stats.domElement );
+    // LIGHT
+    var light = new THREE.PointLight(0xffffff);
+    light.position.set(0,250,0);
+    scene.add(light);
+    // FLOOR
+    var floorTexture = new THREE.ImageUtils.loadTexture( 'images/checkerboard.jpg' );
+    floorTexture.wrapS = floorTexture.wrapT = THREE.RepeatWrapping;
+    floorTexture.repeat.set( 10, 10 );
+    var floorMaterial = new THREE.MeshBasicMaterial( { map: floorTexture, side: THREE.DoubleSide } );
+    var floorGeometry = new THREE.PlaneGeometry(1000, 1000, 10, 10);
+    var floor = new THREE.Mesh(floorGeometry, floorMaterial);
+    floor.position.y = -0.5;
+    floor.rotation.x = Math.PI / 2;
+    scene.add(floor);
+    // SKYBOX/FOG
+    var skyBoxGeometry = new THREE.CubeGeometry( 10000, 10000, 10000 );
+    var skyBoxMaterial = new THREE.MeshBasicMaterial( { color: 0x9999ff, side: THREE.BackSide } );
+    var skyBox = new THREE.Mesh( skyBoxGeometry, skyBoxMaterial );
+    // scene.add(skyBox);
+    scene.fog = new THREE.FogExp2( 0x9999ff, 0.00025 );
 
-    document.addEventListener( 'mousemove', onDocumentMouseMove, false );
-    document.addEventListener( 'touchstart', onDocumentTouchStart, false );
-    document.addEventListener( 'touchmove', onDocumentTouchMove, false );
+    ////////////
+    // CUSTOM //
+    ////////////
 
-    //
-
-    window.addEventListener( 'resize', onWindowResize, false );
-
-}
-
-function onWindowResize() {
-
-    windowHalfX = window.innerWidth / 2;
-    windowHalfY = window.innerHeight / 2;
-
-    camera.aspect = window.innerWidth / window.innerHeight;
-    camera.updateProjectionMatrix();
-
-    renderer.setSize( window.innerWidth, window.innerHeight );
-
-}
-
-function onDocumentMouseMove( event ) {
-
-    mouseX = event.clientX - windowHalfX;
-    mouseY = event.clientY - windowHalfY;
-
-}
-
-function onDocumentTouchStart( event ) {
-
-    if ( event.touches.length === 1 ) {
-
-        event.preventDefault();
-
-        mouseX = event.touches[ 0 ].pageX - windowHalfX;
-        mouseY = event.touches[ 0 ].pageY - windowHalfY;
-
-    }
+    // create an array with six textures for a cool cube
+    var materialArray = [];
+    materialArray.push(new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture( 'images/xpos.png' ) }));
+    materialArray.push(new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture( 'images/xneg.png' ) }));
+    materialArray.push(new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture( 'images/ypos.png' ) }));
+    materialArray.push(new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture( 'images/yneg.png' ) }));
+    materialArray.push(new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture( 'images/zpos.png' ) }));
+    materialArray.push(new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture( 'images/zneg.png' ) }));
+    var MovingCubeMat = new THREE.MeshFaceMaterial(materialArray);
+    var MovingCubeGeom = new THREE.CubeGeometry( 50, 50, 50, 1, 1, 1, materialArray );
+    MovingCube = new THREE.Mesh( MovingCubeGeom, MovingCubeMat );
+    MovingCube.position.set(0, 25.1, 0);
+    scene.add( MovingCube );
 
 }
 
-function onDocumentTouchMove( event ) {
+var MovingCube;
 
-    if ( event.touches.length === 1 ) {
-
-        event.preventDefault();
-
-        mouseX = event.touches[ 0 ].pageX - windowHalfX;
-        mouseY = event.touches[ 0 ].pageY - windowHalfY;
-
-    }
-
-}
-
-//
-
-function animate() {
-
+function animate()
+{
     requestAnimationFrame( animate );
-
     render();
+    update();
+}
+
+function update()
+{
+    var delta = clock.getDelta(); // seconds.
+    var moveDistance = 200 * delta; // 200 pixels per second
+    var rotateAngle = Math.PI / 2 * delta;   // pi/2 radians (90 degrees) per second
+
+    // local transformations
+
+    // move forwards/backwards/left/right
+    if ( keyboard.pressed("W") )
+        MovingCube.translateZ( -moveDistance );
+    if ( keyboard.pressed("S") )
+        MovingCube.translateZ(  moveDistance );
+    if ( keyboard.pressed("Q") )
+        MovingCube.translateX( -moveDistance );
+    if ( keyboard.pressed("E") )
+        MovingCube.translateX(  moveDistance );
+
+    // rotate left/right/up/down
+    var rotation_matrix = new THREE.Matrix4().identity();
+    if ( keyboard.pressed("A") )
+        MovingCube.rotateOnAxis( new THREE.Vector3(0,1,0), rotateAngle);
+    if ( keyboard.pressed("D") )
+        MovingCube.rotateOnAxis( new THREE.Vector3(0,1,0), -rotateAngle);
+    if ( keyboard.pressed("R") )
+        MovingCube.rotateOnAxis( new THREE.Vector3(1,0,0), rotateAngle);
+    if ( keyboard.pressed("F") )
+        MovingCube.rotateOnAxis( new THREE.Vector3(1,0,0), -rotateAngle);
+
+    if ( keyboard.pressed("Z") )
+    {
+        MovingCube.position.set(0,25.1,0);
+        MovingCube.rotation.set(0,0,0);
+    }
+
+    var relativeCameraOffset = new THREE.Vector3(0,50,200);
+
+    var cameraOffset = relativeCameraOffset.applyMatrix4( MovingCube.matrixWorld );
+
+    camera.position.x = cameraOffset.x;
+    camera.position.y = cameraOffset.y;
+    camera.position.z = cameraOffset.z;
+    camera.lookAt( MovingCube.position );
+
+    //camera.updateMatrix();
+    //camera.updateProjectionMatrix();
+
     stats.update();
-
 }
 
-function render() {
-
-    var time = Date.now() * 0.00005;
-
-    camera.position.x += ( mouseX - camera.position.x ) * 0.05;
-    camera.position.y += ( - mouseY - camera.position.y ) * 0.05;
-
-    camera.lookAt( scene.position );
-
-    for ( i = 0; i < scene.children.length; i ++ ) {
-
-        var object = scene.children[ i ];
-
-        if ( object instanceof THREE.PointCloud ) {
-
-            object.rotation.y = time * ( i < 4 ? i + 1 : - ( i + 1 ) );
-
-        }
-
-    }
-
-    for ( i = 0; i < materials.length; i ++ ) {
-
-        color = parameters[i][0];
-
-        h = ( 360 * ( color[0] + time ) % 360 ) / 360;
-        materials[i].color.setHSL( h, color[1], color[2] );
-
-    }
-
+function render()
+{
     renderer.render( scene, camera );
-
 }
+

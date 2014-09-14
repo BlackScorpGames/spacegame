@@ -1,6 +1,6 @@
 $(function(){
 
-    var renderer,stats,controls,camera,projector,raycaster,mouse = {x:0,y:0}, sceneDiv = $('#scene'),radius = 10;
+    var renderer,stats,controls,camera,projector,raycaster,mouse = {x:0,y:0}, sceneDiv = $('#scene'),radius = 10,clock,myShip;
     initStats();
     init();
     createStars();
@@ -20,6 +20,9 @@ $(function(){
         scene = new THREE.Scene();
 
         scene.add( new THREE.AmbientLight( 0xcccccc ) );
+
+         clock = new THREE.Clock();
+
         camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 10000);
         camera.position.x = 100;
 
@@ -33,7 +36,11 @@ $(function(){
         sceneDiv.append(renderer.domElement);
 
 
-        controls = new THREE.TrackballControls(camera,renderer.domElement);
+
+
+
+        /*
+         controls = new THREE.TrackballControls(camera,renderer.domElement);
 
         controls.rotateSpeed = 1.0;
         controls.zoomSpeed = 1.2;
@@ -46,8 +53,8 @@ $(function(){
         controls.dynamicDampingFactor = 0.3;
 
 
-        controls.addEventListener('change', render);
-
+       // controls.addEventListener('change', render);
+    */
 
 
         projector = new THREE.Projector();
@@ -59,8 +66,21 @@ $(function(){
     function animate() {
 
         requestAnimationFrame(animate);
-        controls.update();
+
         stats.update();
+        if(controls != undefined){
+            var delta = clock.getDelta();
+
+            var relativeCameraOffset = new THREE.Vector3(0,10,10);
+
+            var cameraOffset = relativeCameraOffset.applyMatrix4( myShip.matrixWorld );
+
+            camera.position.x = cameraOffset.x;
+            camera.position.y = cameraOffset.y;
+            camera.position.z = cameraOffset.z;
+            camera.lookAt( myShip.position );
+            controls.update( delta );
+        }
 
 
       //  theta +=0.1;
@@ -137,11 +157,16 @@ $(function(){
 
         loader.load( "assets/objects/spaceship.json", function(geometry, materials){
 
-            var ship = new THREE.Mesh( geometry, new THREE.MeshFaceMaterial( materials ) );
-            ship.scale.set( 10, 10, 10 );
+            myShip = new THREE.Mesh( geometry, new THREE.MeshFaceMaterial( materials ) );
+            myShip.scale.set( 10, 10, 10 );
 
-            scene.add(ship);
-
+            scene.add(myShip);
+            controls = new THREE.FlyControls( myShip);
+            controls.movementSpeed = 1000;
+            controls.domElement = renderer.domElement;
+            controls.rollSpeed = Math.PI / 24;
+            controls.autoForward = false;
+            controls.dragToLook = false;
         } );
     }
     $(window).on('resize', function (e) {
