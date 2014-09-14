@@ -79,15 +79,14 @@ $(function () {
         controls.update();
         stats.update();
 
-
+        theta +=0.1;
+        galaxy.rotation.z =  THREE.Math.degToRad(theta );
 
 
         render();
     }
 
     function render() {
-
-
         renderer.render(scene, camera);
 
     }
