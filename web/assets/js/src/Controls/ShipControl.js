@@ -8,13 +8,13 @@ THREE.ShipControl = function ( object, domElement ) {
     this.keyboard = new Keyboard();
 
 
-    var relativeCameraOffset = new THREE.Vector3(200,200,200);
+    this.relativeCameraOffset = new THREE.Vector3(0,200,200);
 
-    var cameraOffset = relativeCameraOffset.applyMatrix4( this.object.matrixWorld );
+    this.cameraOffset = this.relativeCameraOffset.applyMatrix4( this.object.matrixWorld );
 
-    this.camera.position.x = cameraOffset.x;
-    this.camera.position.y = cameraOffset.y;
-    this.camera.position.z = cameraOffset.z;
+    this.camera.position.x = this.cameraOffset.x;
+    this.camera.position.y = this.cameraOffset.y;
+    this.camera.position.z = this.cameraOffset.z;
     this.camera.lookAt( this.object.position );
     function bind( scope, fn ) {
 
@@ -41,17 +41,21 @@ THREE.ShipControl.prototype.handleKeys = function(){
     }
     if(this.keyboard.isDown('W')){
         this.object.position.z -= 10;
+        this.camera.position.z -= 10;
     }
     if(this.keyboard.isDown('S')){
         this.object.position.z += 10;
+        this.camera.position.z += 10;
     }
     if(this.keyboard.isDown('A')){
-        this.object.position.x += 10;
+        this.object.position.x -= 10;
+        this.camera.position.x -= 10;
     }
     if(this.keyboard.isDown('D')){
-        this.object.position.x -= 10;
+        this.object.position.x += 10;
+        this.camera.position.x += 10;
     }
-    console.log();
+
 }
 THREE.ShipControl.prototype.getCamera = function(){
     return this.camera;
