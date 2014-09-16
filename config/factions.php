@@ -1,4 +1,5 @@
 <?php
+
 return array(
     array(
         'name'=>_('faction1'),

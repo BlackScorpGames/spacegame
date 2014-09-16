@@ -1,13 +1,31 @@
-<?php
+<?php namespace SpaceGame\Entity;
 
-
-namespace SpaceGame\Entity;
-
-
+/**
+ * Class EngineEntity
+ * @package SpaceGame\Entity
+ */
 class EngineEntity {
+
+    /**
+     * Contains the engine id
+     *
+     * @var int
+     */
     private $engineId;
+
+    /**
+     * Contains the engine name
+     *
+     * @var
+     */
     private $engineName;
 
+    /**
+     * Initialize the engine class and create engine
+     *
+     * @param $engineId
+     * @param $engineName
+     */
     public function __construct($engineId, $engineName)
     {
         $this->engineId =(int)$engineId;
@@ -15,6 +33,8 @@ class EngineEntity {
     }
 
     /**
+     * Return engine id
+     *
      * @return mixed
      */
     public function getEngineId()
@@ -23,6 +43,8 @@ class EngineEntity {
     }
 
     /**
+     * Return engine name
+     *
      * @return mixed
      */
     public function getEngineName()
