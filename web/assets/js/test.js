@@ -1,6 +1,6 @@
 $(function(){
 
-    var renderer,stats,controls,camera,projector,raycaster,mouse = {x:0,y:0}, sceneDiv = $('#scene'),radius = 10,clock,myShip;
+    var renderer,stats,controls,camera,projector,raycaster,mouse = {x:0,y:0}, sceneDiv = $('#scene'),radius = 10,clock,myShip,trackball;
     initStats();
     init();
     createStars();
@@ -35,7 +35,6 @@ $(function(){
         renderer.domElement.style.top = '0';
         renderer.domElement.style.position = 'absolute';
         sceneDiv.append(renderer.domElement);
-
 
 
 
@@ -82,6 +81,8 @@ $(function(){
             camera.lookAt( myShip.position );
         */
             controls.update( delta );
+
+
         }
 
 
@@ -165,6 +166,7 @@ $(function(){
             scene.add(myShip);
             controls = new THREE.ShipControl(myShip);
             camera = controls.getCamera();
+
 
             /*
             controls = new THREE.FlyControls( myShip);

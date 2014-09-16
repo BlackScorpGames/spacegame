@@ -49,9 +49,9 @@ header a,header a:hover,header a:visited{
     -o-transform: scale(0.8);
     transform: scale(0.8);
     -webkit-transition: transform 0.5s;
-    max-height: 200px;
-    display: inline-block;
+
     transition:transform 0.5s;
+    cursor: pointer;
 }
 .faction:hover,.faction.selected{
     -webkit-transform: scale(1);
@@ -60,4 +60,47 @@ header a,header a:hover,header a:visited{
     -o-transform: scale(1);
     transform: scale(1);
 
+}
+.faction .faction-description{
+    transition:opacity 0.5s;
+    opacity: 0;
+}
+.faction:hover .faction-description{
+    transition:opacity 0.5s;
+    opacity: 1;
+}
+.new-game-form{
+    position: absolute;
+    z-index: 1;
+    width: 500px;
+    left:50%;
+    margin-left:-250px;
+    text-align: center;
+    top:20%;
+}
+ul.faction-selection{
+    position: absolute;
+    list-style: inside none;
+    margin: 0;
+    margin-top: 50px;
+    padding: 0;
+}
+ul.faction-selection li{
+    float: left;
+
+}
+ul.faction-selection li:after{
+    clear:both;
+}
+ul.faction-selection .faction-description{
+
+    position: absolute;
+    background: #ffffff;
+    width: 250px;
+
+
+}
+ul.faction-selection img{
+    width:250px;
+    height: auto;
 }
