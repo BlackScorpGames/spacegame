@@ -1,19 +1,40 @@
-<?php
+<?php namespace SpaceGame\Entity;
+
+
 /**
- * Created by PhpStorm.
- * User: BlackScorp
- * Date: 16.09.2014
- * Time: 20:53
+ * Class FactionEntity
+ * @package SpaceGame\Entity
  */
-
-namespace SpaceGame\Entity;
-
-
 class FactionEntity {
+
+    /**
+     * Contains faction id
+     *
+     * @var int
+     */
     private $factionId = 0;
+
+    /**
+     * Contains faction name
+     *
+     * @var string
+     */
     private $name = '';
+
+    /**
+     * Contains faction description
+     *
+     * @var string
+     */
     private $description = '';
 
+    /**
+     * Initialize class and create faction
+     *
+     * @param $factionId
+     * @param $name
+     * @param $description
+     */
     public function __construct($factionId, $name, $description)
     {
         $this->factionId = $factionId;
@@ -22,6 +43,8 @@ class FactionEntity {
     }
 
     /**
+     * Return faction description
+     *
      * @return string
      */
     public function getDescription()
@@ -30,6 +53,8 @@ class FactionEntity {
     }
 
     /**
+     * Return faction id
+     *
      * @return int
      */
     public function getFactionId()
@@ -38,6 +63,8 @@ class FactionEntity {
     }
 
     /**
+     * Return faction name
+     *
      * @return string
      */
     public function getName()
